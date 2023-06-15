@@ -23,3 +23,7 @@ $ pig -x local -f pregunta.pig
 
 */
 
+lines = LOAD 'data.csv' USING PigStorage(',') AS (f1:CHARARRAY, f2:CHARARRAY, f3:CHARARRAY, f4:CHARARRAY, f5:CHARARRAY);
+columna = FOREACH lines GENERATE f2, f5;
+orden = FILTER columna BY (f5 MATCHES 'b.*');
+STORE orden INTO 'output' USING PigStorage(',');

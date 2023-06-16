@@ -20,9 +20,14 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+u = LOAD 'data.csv' USING PigStorage(',')
+        AS(col1:INT,
+           col2:charArray,
+           col3:charArray,
+           col4:charArray,
+           col5:charArray,
+           col6:INT);
 
-l= LOAD 'data.tsv' USING PigStorage (',') AS (col1: Int, col2: chararray, col3: chararray, col4: chararray, col5: chararray, col6: Int);
-
-result = FILTER l BY SUBSTRING(col2, 0, 1) >= 'm';
-result = FOREACH result GENERATE col2;
-STORE result INTO 'output' USING PigStorage(',');
+u = FOREACH u GENERATE col2;
+u = FILTER u BY SUBSTRING(col2,0,1) MATCHES '[M-Z]';
+STORE u INTO 'output' USING PigStorage(',');
